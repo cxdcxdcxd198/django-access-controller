@@ -57,10 +57,17 @@ async function activate(context) {
 				vscode.commands.executeCommand('django-tool.create-superuser');
 			} else if (selected === 'Collect Static') {
 				vscode.commands.executeCommand('django-tool.collect-static');
+			} else if (selected === 'Run Test') {
+				vscode.commands.executeCommand('django-tool.Test');
 			} else {
 				vscode.window.showErrorMessage('Invalid Command');
 			}
 		});
+	});
+
+	const Test = vscode.commands.registerCommand('django-tool.Test', function () {
+		runCommandInTerminal(`${pythonPath} manage.py test`);
+		vscode.window.showInformationMessage(`${pythonPath} manage.py test`)
 	});
 
 	const createProject = vscode.commands.registerCommand('django-tool.create-project', function () {
@@ -302,7 +309,7 @@ async function activate(context) {
 		}
 	});
 
-	context.subscriptions.push(disposable, runServer, migrate, createSuperUser, runServerPort, createProject, collectStatic, startApp, makemigrations, searchQueryByAI, modelGen);
+	context.subscriptions.push(disposable, runServer, migrate, createSuperUser, runServerPort, createProject, collectStatic, startApp, makemigrations, searchQueryByAI, modelGen, Test);
 }
 
 function runCommandInTerminal(command) {
